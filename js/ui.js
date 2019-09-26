@@ -1,20 +1,31 @@
 (function (window, document) {
 
-    var layout   = document.getElementById('layout'),
-        menu     = document.getElementById('menu'),
+    var cryptoCoinsData = []
+    var bitcoinTrends = JSON.parse(localStorage.getItem("bitcoinTrends")) || {};
+
+    // console.log(bitcoinTrends)
+    if (bitcoinTrends) {
+        cryptoCoins = Object.keys(bitcoinTrends)
+        cryptoCoins.forEach((item) => {
+            cryptoCoinsData.push(bitcoinTrends[item])
+        })
+    }
+
+    var layout = document.getElementById('layout'),
+        menu = document.getElementById('menu'),
         menuLink = document.getElementById('menuLink'),
-        content  = document.getElementById('main');
+        content = document.getElementById('main');
 
     function toggleClass(element, className) {
         var classes = element.className.split(/\s+/),
             length = classes.length,
             i = 0;
 
-        for(; i < length; i++) {
-          if (classes[i] === className) {
-            classes.splice(i, 1);
-            break;
-          }
+        for (; i < length; i++) {
+            if (classes[i] === className) {
+                classes.splice(i, 1);
+                break;
+            }
         }
         // The className is not found
         if (length === classes.length) {
@@ -33,41 +44,87 @@
         toggleClass(menuLink, active);
     }
 
-    setInterval(function(){
-        axios.get('https://api.blockcypher.com/v1/eth/main')
-          .then(function(response){
-            var blockValue = response.data;
-            // console.log("Block number: " + response.data["height"]);
-      
-            blockNumber = blockValue["height"]
-      
-            axios.get('https://api.etherscan.io/api?module=block&action=getblockreward&blockno=' + blockNumber + '&apikey=YourApiKeyToken')
-              .then(function(response){
-                previousBlockNumebr = blockNumber;
-                var currentBlock = response.data.result;
-                document.getElementById('currentHeight').innerHTML = blockValue["height"];
-                document.getElementById('peerCount').innerHTML = blockValue["peer_count"];
-                document.getElementById('blockNumber').innerHTML = currentBlock["blockNumber"];
-                document.getElementById('blockReward').innerHTML = currentBlock["blockReward"];
-              });
-          })
-          .catch(function(error){
-            console.log("Error: " + error);
-          })
-      
-      }, 3000);
+    // function getLatestBlock2() {
+    //     var sync = web3.eth.syncing;
+    //     console.log(sync);
+    // }
+
+    // setInterval(function () {
+    //     axios.get('https://api.blockcypher.com/v1/eth/main')
+    //         .then(function (response) {
+    //             var blockValue = response.data;
+    //             console.log("Block number: " + response.data["height"]);
+
+    //             blockNumber = blockValue["height"]
+
+    //             axios.get('https://api.etherscan.io/api?module=block&action=getblockreward&blockno=' + blockNumber + '&apikey=YourApiKeyToken')
+    //                 .then(function (response) {
+    //                     previousBlockNumebr = blockNumber;
+    //                     var currentBlock = response.data.result;
+    //                     document.getElementById('currentHeight').innerHTML = blockValue["height"];
+    //                     document.getElementById('peerCount').innerHTML = blockValue["peer_count"];
+    //                     document.getElementById('blockNumber').innerHTML = currentBlock["blockNumber"];
+    //                     document.getElementById('blockReward').innerHTML = currentBlock["blockReward"];
+    //                 });
+    //         })
+    //         .catch(function (error) {
+    //             console.log("Error: " + error);
+    //         })
+
+    // }, 100000);
+
+    setInterval(function () {
+
+        web3 = new Web3(window.ethereum);
+        // let blockNumber = 0;
+        web3.eth.getBlockNumber(function (error, result) {
+            if (!error) {
+                console.log(result);
+                var blockNumber = result
+
+                web3.eth.getBlockTransactionCount(blockNumber, function (error, result) {
+                    if (!error) {
+                        console.log(result)
+                        var blockTransactionCount = result
+                        document.getElementById('peerCount').innerHTML = blockTransactionCount;
+                    }
+                })
+
+                axios.get('https://api.etherscan.io/api?module=block&action=getblockreward&blockno=' + blockNumber + '&apikey=YourApiKeyToken')
+                    .then(function (response) {
+                        previousBlockNumebr = blockNumber;
+                        var currentBlock = response.data.result;
+                        console.log(currentBlock)
+                        document.getElementById('currentHeight').innerHTML = blockNumber;
+                        // document.getElementById('peerCount').innerHTML = currentBlock["blockMiner"];
+                        document.getElementById('blockNumber').innerHTML = currentBlock["blockNumber"];
+                        document.getElementById('blockReward').innerHTML = currentBlock["blockReward"] / 1000000000000000000;
+                    })
+                    .catch(function (error) {
+                        console.log("Error: " + error);
+                    })
+            }
+            else
+                console.error(error);
+        })
+        console.log("Block number: " + blockNumber)
+        // console.log("Block number: " + response.data["height"]);
+
+        // blockNumber = blockValue["height"]
+
+    }, 100000);
 
     menuLink.onclick = function (e) {
         toggleAll(e);
     };
 
-    content.onclick = function(e) {
+    content.onclick = function (e) {
         if (menu.className.indexOf('active') !== -1) {
             toggleAll(e);
         }
     };
 
-    document.getElementById('submitDetails').onclick = function(e){
+    document.getElementById('submitDetails').onclick = function (e) {
         var userDetails = {};
         var bitcoinTrend = {};
         userDetails['name'] = document.getElementById('name').value;
@@ -79,7 +136,6 @@
 
         var userDetailsData = JSON.parse(localStorage.getItem("userDetails")) || [];
 
-        var bitcoinTrends = JSON.parse(localStorage.getItem("bitcoinTrends")) || {};
         var newValue = bitcoinTrends[userDetails['state']] ? bitcoinTrends[userDetails['state']] + 1 : 1;
 
         bitcoinTrends[userDetails['state']] = newValue;
@@ -94,5 +150,44 @@
         localStorage.setItem("userDetails", JSON.stringify(userDetailsData));
         localStorage.setItem("bitcoinTrends", JSON.stringify(bitcoinTrends));
     }
+
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Bitcoin', 'Ethereum', 'Monero', 'Cardano'],
+            datasets: [{
+                label: '# of Votes',
+                data: cryptoCoinsData,
+                // data: [12, 19, 3, 5, 2, 3],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    // 'rgba(153, 102, 255, 0.2)',
+                    // 'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    // 'rgba(153, 102, 255, 1)',
+                    // 'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
 
 }(this, this.document));
