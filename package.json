@@ -1,0 +1,22 @@
+{
+  "name": "blockchain_trends",
+  "version": "1.0.0",
+  "description": "Pure CSS Layout Examples ========================",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deepcrazy/blockchainTrends.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/deepcrazy/blockchainTrends/issues"
+  },
+  "homepage": "https://github.com/deepcrazy/blockchainTrends#readme",
+  "dependencies": {
+    "chart.js": "^2.8.0"
+  }
+}
