@@ -2,14 +2,15 @@
 
     var cryptoCoinsData = []
     var bitcoinTrends = JSON.parse(localStorage.getItem("bitcoinTrends")) || {};
+    makeBlockchainTrendsChart();
 
     // console.log(bitcoinTrends)
-    if (bitcoinTrends) {
-        cryptoCoins = Object.keys(bitcoinTrends)
-        cryptoCoins.forEach((item) => {
-            cryptoCoinsData.push(bitcoinTrends[item])
-        })
-    }
+    // if (bitcoinTrends) {
+    //     cryptoCoins = Object.keys(bitcoinTrends)
+    //     cryptoCoins.forEach((item) => {
+    //         cryptoCoinsData.push(bitcoinTrends[item])
+    //     })
+    // }
 
     var layout = document.getElementById('layout'),
         menu = document.getElementById('menu'),
@@ -72,9 +73,7 @@
     //         })
 
     // }, 100000);
-
-    setInterval(function () {
-
+    function getLatestBlockDetails() {
         web3 = new Web3(window.ethereum);
         // let blockNumber = 0;
         web3.eth.getBlockNumber(function (error, result) {
@@ -107,12 +106,49 @@
             else
                 console.error(error);
         })
+    }
+    getLatestBlockDetails();
+
+    setInterval(function () {
+        getLatestBlockDetails();
+        // web3 = new Web3(window.ethereum);
+        // // let blockNumber = 0;
+        // web3.eth.getBlockNumber(function (error, result) {
+        //     if (!error) {
+        //         console.log(result);
+        //         var blockNumber = result
+
+        //         web3.eth.getBlockTransactionCount(blockNumber, function (error, result) {
+        //             if (!error) {
+        //                 console.log(result)
+        //                 var blockTransactionCount = result
+        //                 document.getElementById('peerCount').innerHTML = blockTransactionCount;
+        //             }
+        //         })
+
+        //         axios.get('https://api.etherscan.io/api?module=block&action=getblockreward&blockno=' + blockNumber + '&apikey=YourApiKeyToken')
+        //             .then(function (response) {
+        //                 previousBlockNumebr = blockNumber;
+        //                 var currentBlock = response.data.result;
+        //                 console.log(currentBlock)
+        //                 document.getElementById('currentHeight').innerHTML = blockNumber;
+        //                 // document.getElementById('peerCount').innerHTML = currentBlock["blockMiner"];
+        //                 document.getElementById('blockNumber').innerHTML = currentBlock["blockNumber"];
+        //                 document.getElementById('blockReward').innerHTML = currentBlock["blockReward"] / 1000000000000000000;
+        //             })
+        //             .catch(function (error) {
+        //                 console.log("Error: " + error);
+        //             })
+        //     }
+        //     else
+        //         console.error(error);
+        // })
         console.log("Block number: " + blockNumber)
         // console.log("Block number: " + response.data["height"]);
 
         // blockNumber = blockValue["height"]
 
-    }, 100000);
+    }, 10000);
 
     menuLink.onclick = function (e) {
         toggleAll(e);
@@ -128,8 +164,8 @@
         var userDetails = {};
         var bitcoinTrend = {};
         userDetails['name'] = document.getElementById('name').value;
-        userDetails['accountNumber'] = document.getElementById('accountNumber').value;
-        userDetails['email'] = document.getElementById('email').value;
+        // userDetails['accountNumber'] = document.getElementById('accountNumber').value;
+        // userDetails['email'] = document.getElementById('email').value;
         userDetails['state'] = document.getElementById('state').value;
 
         document.getElementById('userForm').reset();
@@ -149,45 +185,54 @@
 
         localStorage.setItem("userDetails", JSON.stringify(userDetailsData));
         localStorage.setItem("bitcoinTrends", JSON.stringify(bitcoinTrends));
+
+        // document.getElementById('myChart').setAttribute('style' , "display: block")
+        console.log(bitcoinTrends)
+        makeBlockchainTrendsChart();
+        // console.log(Object.keys(bitcoinTrends).map(key => bitcoinTrends[key]))
+        // console.log(myChart.data.datasets[0].data)
     }
 
-    var ctx = document.getElementById('myChart').getContext('2d');
-    var myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['Bitcoin', 'Ethereum', 'Monero', 'Cardano'],
-            datasets: [{
-                label: '# of Votes',
-                data: cryptoCoinsData,
-                // data: [12, 19, 3, 5, 2, 3],
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    // 'rgba(153, 102, 255, 0.2)',
-                    // 'rgba(255, 159, 64, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    // 'rgba(153, 102, 255, 1)',
-                    // 'rgba(255, 159, 64, 1)'
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
+    function makeBlockchainTrendsChart() {
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: Object.keys(bitcoinTrends),
+                datasets: [{
+                    label: '# of Votes',
+                    data: [...Object.keys(bitcoinTrends).map(key => bitcoinTrends[key])],
+                    // data: [12, 19, 3, 5, 2, 3],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        // 'rgba(153, 102, 255, 0.2)',
+                        // 'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        // 'rgba(153, 102, 255, 1)',
+                        // 'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
                 }]
+            },
+            options: {
+                events: [],
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
             }
-        }
-    });
+        });
+    }
 
 }(this, this.document));
