@@ -17,14 +17,13 @@
     <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script> -->
     <script src="node_modules/chart.js/dist/Chart.js"></script>
 
-
     <!--[if lte IE 8]>
             <link rel="stylesheet" href="css/layouts/side-menu-old-ie.css">
         <![endif]-->
     <!--[if gt IE 8]><!-->
     <link rel="stylesheet" href="css/layouts/side-menu.css">
     <!--<![endif]-->
-
+    
 </head>
 
 <body>
@@ -118,7 +117,7 @@
                     <fieldset>
                         <div class="pure-control-group">
                             <label for="name">Username</label>
-                            <input id="name" type="text" placeholder="Username">
+                            <input id="name" type="text" placeholder="Username" required>
                             <span class="pure-form-message-inline">This is a required field.</span>
                         </div>
 
@@ -134,7 +133,7 @@
 
                         <div class="pure-control-group">
                             <label for="state">Preferred Cryptocurrency</label>
-                            <select id="state">
+                            <select id="state" required>
                                 <option>Select</option>
                                 <option>Bitcoin</option>
                                 <option>Etherium</option>

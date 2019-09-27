@@ -3,6 +3,7 @@
     var cryptoCoinsData = []
     var bitcoinTrends = JSON.parse(localStorage.getItem("bitcoinTrends")) || {};
     makeBlockchainTrendsChart();
+    document.getElementById("submitDetails").disabled = true;
 
     // console.log(bitcoinTrends)
     // if (bitcoinTrends) {
@@ -160,21 +161,46 @@
         }
     };
 
+    document.getElementById("name").onchange = function(e) {
+        if (document.getElementById('name').value && document.getElementById('state').value) {
+            if (document.getElementById('state').value != 'Select')
+                document.getElementById("submitDetails").disabled = false;
+        }
+        // document.getElementById("submitDetails").disabled = true;
+    }
+
+    document.getElementById("state").onchange = function(e) {
+        if (document.getElementById('name').value && document.getElementById('state').value) {
+            if (document.getElementById('state').value != 'Select')
+                document.getElementById("submitDetails").disabled = false;
+        }
+        // document.getElementById("submitDetails").disabled = true;
+    }
+
     document.getElementById('submitDetails').onclick = function (e) {
+
         var userDetails = {};
         var bitcoinTrend = {};
-        userDetails['name'] = document.getElementById('name').value;
+        // userDetails['name'] = document.getElementById('name').value;
         // userDetails['accountNumber'] = document.getElementById('accountNumber').value;
         // userDetails['email'] = document.getElementById('email').value;
-        userDetails['state'] = document.getElementById('state').value;
+        var newValue = 0;
+        if (document.getElementById('state').value !== 'Select') {
+            userDetails['name'] = document.getElementById('name').value;
+            userDetails['state'] = document.getElementById('state').value;
+            newValue = bitcoinTrends[userDetails['state']] ? bitcoinTrends[userDetails['state']] + 1 : 1;
+            bitcoinTrends[userDetails['state']] = newValue
+        }
+
 
         document.getElementById('userForm').reset();
+        document.getElementById("submitDetails").disabled = true;
 
         var userDetailsData = JSON.parse(localStorage.getItem("userDetails")) || [];
 
-        var newValue = bitcoinTrends[userDetails['state']] ? bitcoinTrends[userDetails['state']] + 1 : 1;
+        // var newValue = bitcoinTrends[userDetails['state']] ? bitcoinTrends[userDetails['state']] + 1 : 1;
 
-        bitcoinTrends[userDetails['state']] = newValue;
+        // bitcoinTrends[userDetails['state']] = newValue;
 
         document.getElementById('Bitcoin').innerHTML = bitcoinTrends["Bitcoin"] || 0;
         document.getElementById('Etherium').innerHTML = bitcoinTrends["Etherium"] || 0;
