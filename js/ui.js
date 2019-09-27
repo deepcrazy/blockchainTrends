@@ -161,7 +161,7 @@
         }
     };
 
-    document.getElementById("name").onchange = function(e) {
+    document.getElementById("name").onchange = function (e) {
         if (document.getElementById('name').value && document.getElementById('state').value) {
             if (document.getElementById('state').value != 'Select')
                 document.getElementById("submitDetails").disabled = false;
@@ -169,7 +169,7 @@
         // document.getElementById("submitDetails").disabled = true;
     }
 
-    document.getElementById("state").onchange = function(e) {
+    document.getElementById("state").onchange = function (e) {
         if (document.getElementById('name').value && document.getElementById('state').value) {
             if (document.getElementById('state').value != 'Select')
                 document.getElementById("submitDetails").disabled = false;
@@ -218,6 +218,33 @@
         // console.log(Object.keys(bitcoinTrends).map(key => bitcoinTrends[key]))
         // console.log(myChart.data.datasets[0].data)
     }
+
+    var displayEtherBalanceContainer = document.getElementById("displayEtherBalance")
+    var pTag = document.createElement('p')
+    document.getElementById("submitUserAccountAddress").addEventListener("click", function (event) {
+        event.preventDefault();
+        usersAccountAddress = document.getElementById("userAccountAddress").value
+
+        console.log("User Address2: " + usersAccountAddress)
+        axios.get('https://api-ropsten.etherscan.io/api?module=account&action=balance&address=' + usersAccountAddress + '&tag=latest')
+            .then(function (response) {
+                if (usersAccountAddress) {
+                    // console.log(response.data);
+                    userAccountWeiBalance = response.data["result"];
+                    userAccountEtherBalance = userAccountWeiBalance / 1000000000000000000;
+                    console.log("Account Balance: " + userAccountEtherBalance);
+
+                    pTag.innerText = "User's Ether Balance: " + userAccountEtherBalance;
+                    // pTag.setAttribute('text', userAccountEtherBalance)
+                    displayEtherBalanceContainer.appendChild(pTag);
+                }
+                else {
+                    alert("Please enter account address for getting ether balance details")
+                }
+
+            })
+        document.getElementById('userEtherAccountForm').reset();
+    })
 
     function makeBlockchainTrendsChart() {
         var ctx = document.getElementById('myChart').getContext('2d');
