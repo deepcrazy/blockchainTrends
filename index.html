@@ -23,7 +23,7 @@
     <!--[if gt IE 8]><!-->
     <link rel="stylesheet" href="css/layouts/side-menu.css">
     <!--<![endif]-->
-    
+
 </head>
 
 <body>
@@ -183,21 +183,22 @@
                 <canvas id="myChart" width="400" height="200"></canvas>
                 <!-- </div> -->
 
-                <div id = "UserEtherBalance" style="width: 600px; height: 450px;">
+                <div id="UserEtherBalance" style="width: 600px; height: 450px;">
                     <h2>Ether Balance</h2>
-                    <form id="userForm" class="pure-form pure-form-aligned">
-                            <fieldset>
-                                <div class="pure-control-group">
-                                    <label for="name">User Account address</label>
-                                    <input id="userAccountAddress" type="text" placeholder="User's account address">
-                                    <span class="pure-form-message-inline">This is a required field.</span>
-                                </div>
-                                <div class="pure-controls">
-                                        <button id="submitUserAddress" type="submit"
-                                            class="pure-button pure-button-primary">Submit</button>
-                                </div>
-                            </fieldset>
-                        </form>
+                    <form id="userEtherAccountForm" class="pure-form pure-form-aligned">
+                        <fieldset>
+                            <div class="pure-control-group">
+                                <label for="userAccountAddress">User Account address</label>
+                                <input id="userAccountAddress" type="text" placeholder="User's account address">
+                                <span class="pure-form-message-inline">This is a required field.</span>
+                            </div>
+                            <div id="displayEtherBalance"></div>
+                            <div class="pure-controls">
+                                <button id="submitUserAccountAddress" type="submit"
+                                    class="pure-button pure-button-primary">Submit</button>
+                            </div>
+                        </fieldset>
+                    </form>
                 </div>
 
             </div>
