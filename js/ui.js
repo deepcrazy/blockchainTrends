@@ -152,7 +152,7 @@
 
         // blockNumber = blockValue["height"]
 
-    }, 10000);
+    }, 2000);
 
     menuLink.onclick = function (e) {
         toggleAll(e);
