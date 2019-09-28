@@ -84,30 +84,30 @@
                 <h2 id="CuurentRunningBlock" style="padding-top:30px; text-align: center;">Current Block Mined</h2>
                 <div class="pure-g">
                     <div class="pure-u-1-4">
-                        <p>Height</p>
+                        <p>Block Number</p>
                     </div>
                     <div class="pure-u-1-4">
                         <p>Transaction Count</p>
                     </div>
                     <div class="pure-u-1-4">
-                        <p>Block Number</p>
-                    </div>
-                    <div class="pure-u-1-4">
                         <p>Block Reward (In Ethers)</p>
                     </div>
+                    <div class="pure-u-1-4">
+                        <p style="margin-left: 30px">Time Stamp</p>
+                    </div>
                 </div>
-                <div class="pure-g">
+                <div class="pure-g" style="padding-bottom: 40px;">
                     <div class="pure-u-1-4">
-                        <button id="currentHeight" class="button-success pure-button"></button>
+                        <button id="blockNumber" class="button-success pure-button"></button>
                     </div>
                     <div class="pure-u-1-4">
-                        <button id="peerCount" class="button-error pure-button"></button>
-                    </div>
-                    <div class="pure-u-1-4">
-                        <button id="blockNumber" class="button-warning pure-button"></button>
+                        <button id="transactionCount" class="button-error pure-button"></button>
                     </div>
                     <div class="pure-u-1-4">
                         <button id="blockReward" class="button-secondary pure-button"></button>
+                    </div>
+                    <div class="pure-u-1-4">
+                        <button id="timeStamp" class="button-warning pure-button" style="margin-left: 30px"></button>
                     </div>
                 </div>
 
@@ -180,11 +180,11 @@
                 </div>
 
                 <!-- <div style="width: 600px; height: 50px;"> -->
-                <canvas id="myChart" width="400" height="200"></canvas>
+                <canvas id="myChart" width="400" height="200" style="padding-bottom: 40px;"></canvas>
                 <!-- </div> -->
 
-                <div id="UserEtherBalance" style="width: 600px; height: 450px;">
-                    <h2>Ether Balance</h2>
+                <div id="UserEtherBalance" style="width: 600px; height: 650px;">
+                    <h2 style="text-align: center; padding-bottom: 5px;">Ether Balance</h2>
                     <form id="userEtherAccountForm" class="pure-form pure-form-aligned">
                         <fieldset>
                             <div class="pure-control-group">
