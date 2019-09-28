@@ -86,7 +86,7 @@
                     if (!error) {
                         console.log(result)
                         var blockTransactionCount = result
-                        document.getElementById('peerCount').innerHTML = blockTransactionCount;
+                        document.getElementById('transactionCount').innerHTML = blockTransactionCount;
                     }
                 })
 
@@ -95,9 +95,12 @@
                         previousBlockNumebr = blockNumber;
                         var currentBlock = response.data.result;
                         console.log(currentBlock)
-                        document.getElementById('currentHeight').innerHTML = blockNumber;
+                        document.getElementById('blockNumber').innerHTML = blockNumber;
                         // document.getElementById('peerCount').innerHTML = currentBlock["blockMiner"];
-                        document.getElementById('blockNumber').innerHTML = currentBlock["blockNumber"];
+                        blockTimeStampInUnix = currentBlock["timeStamp"];
+                        unixTimeStampToDateObj = new Date(blockTimeStampInUnix * 1000);
+                        unixTimeStampInUtcString = unixTimeStampToDateObj.toUTCString().slice(5);
+                        document.getElementById('timeStamp').innerHTML = unixTimeStampInUtcString;
                         document.getElementById('blockReward').innerHTML = currentBlock["blockReward"] / 1000000000000000000;
                     })
                     .catch(function (error) {
