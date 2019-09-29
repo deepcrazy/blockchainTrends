@@ -1,14 +1,14 @@
-Name:		DEEPANSHU GUPTA
-Student Id:	101253525
+## Name:		DEEPANSHU GUPTA
+## Student Id:	101253525
 
-GitHub repository link:	https://github.com/deepcrazy/blockchainTrends.git
-Github pages link:	https://deepcrazy.github.io/blockchainTrends/index.html#
+## GitHub repository link:	https://github.com/deepcrazy/blockchainTrends.git
+## Github pages link:	https://deepcrazy.github.io/blockchainTrends/index.html#
 
 
 ## Project Name: Blockchain_Trends ##
 -------------------------------------
 
-# PROJECT DESCRIPTION #
+### PROJECT DESCRIPTION ####
 -----------------------
 	1. The website has 4 sections i.e. Home, Current Block Mined, Cryptocurrency Voting and Ether Balance -  which are displayed 
 	   on the sidebar of the HTML page.
@@ -20,10 +20,7 @@ Github pages link:	https://deepcrazy.github.io/blockchainTrends/index.html#
 	5. 'Ether Balance' section is used to display the 'Ether' balance of the user on ethereum ropsten network.
 
 
-# Project Name: Blockchain_Trends
----------------
-
-# Steps for running the project:
+### Steps for running the project:
 --------------------------------
 	
     # Pre-requisite: The browser should have 'Metamask' pre-installed to open this webpage on the browser.
@@ -33,11 +30,11 @@ Github pages link:	https://deepcrazy.github.io/blockchainTrends/index.html#
 	2. Open the link "http://localhost:3000/"
 
 
-# NOTE:
+### NOTE:
 -------
 	1. The project should be opend in the browser which has already 'Metamask' installed.
 
 
-# References:
+### References:
 -------------
 	1. Layout using [https://purecss.io/] compiled. (https://purecss.io/layouts/)
