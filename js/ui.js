@@ -43,39 +43,51 @@
 
     // Function for getting the latest block mined from ethereum main network and also to fetch timsStamp, Transaction Count and Block reward for the latest block mined.
     function getLatestBlockDetails() {
-        web3 = new Web3(window.ethereum);   // Creating the reference of Web3.
+        try {
+            web3 = new Web3(window.ethereum);   // Creating the reference of Web3.
 
-        // Get Block Number of latest block mined
-        web3.eth.getBlockNumber(function (error, result) {
-            if (!error) {
-                var blockNumber = result    // Storing the block Number for further use.
+            // Get Block Number of latest block mined
+            web3.eth.getBlockNumber(function (error, result) {
+                if (!error) {
+                    var blockNumber = result    // Storing the block Number for further use.
 
-                // Get the number of transactions count from the block number of latest block mined.
-                web3.eth.getBlockTransactionCount(blockNumber, function (error, result) {
-                    if (!error) {
-                        var blockTransactionCount = result  //  Storing the transaction count fetched.
-                        document.getElementById('transactionCount').innerHTML = blockTransactionCount;  // Setting the Transaction Count value in HTML page.
-                    }
-                })
-
-                // Fetching the more block info (like time stamp and block reward in ethers) using the etherscan api
-                axios.get('https://api.etherscan.io/api?module=block&action=getblockreward&blockno=' + blockNumber + '&apikey=YourApiKeyToken')
-                    .then(function (response) {
-                        var currentBlock = response.data.result;    // Storing the Block Object containg whole block information.
-                        document.getElementById('blockNumber').innerHTML = blockNumber;             //  Setting the block Number value in HTML page.
-                        blockTimeStampInUnix = currentBlock["timeStamp"];                           // Fetching timeStamp value from Block Object (In UNIX).
-                        unixTimeStampToDateObj = new Date(blockTimeStampInUnix * 1000);             //  Converting the unix time stamp to date object.
-                        unixTimeStampInUtcString = unixTimeStampToDateObj.toUTCString().slice(5);   // Converting date object of timestamp to utc string for human readability.
-                        document.getElementById('timeStamp').innerHTML = unixTimeStampInUtcString;  // Setting the time stamp value in HTML page.
-                        document.getElementById('blockReward').innerHTML = currentBlock["blockReward"] / 1000000000000000000;   //Setting the block reward value in HTML (Also, coverting the block reward from wei unit to ethers.)
+                    // Get the number of transactions count from the block number of latest block mined.
+                    web3.eth.getBlockTransactionCount(blockNumber, function (error, result) {
+                        if (!error) {
+                            var blockTransactionCount = result  //  Storing the transaction count fetched.
+                            document.getElementById('transactionCount').innerHTML = blockTransactionCount;  // Setting the Transaction Count value in HTML page.
+                        }
                     })
-                    .catch(function (error) {
-                        console.log("Error response received from api: " + error);                  //  For capturing the error occured while fetching the details from etherscan api.
-                    })
+
+                    // Fetching the more block info (like time stamp and block reward in ethers) using the etherscan api
+                    axios.get('https://api.etherscan.io/api?module=block&action=getblockreward&blockno=' + blockNumber)
+                        .then(function (response) {
+                            var currentBlock = response.data.result;    // Storing the Block Object containg whole block information.
+                            document.getElementById('blockNumber').innerHTML = blockNumber;             //  Setting the block Number value in HTML page.
+                            blockTimeStampInUnix = currentBlock["timeStamp"];                           // Fetching timeStamp value from Block Object (In UNIX).
+                            unixTimeStampToDateObj = new Date(blockTimeStampInUnix * 1000);             //  Converting the unix time stamp to date object.
+                            unixTimeStampInUtcString = unixTimeStampToDateObj.toUTCString().slice(5);   // Converting date object of timestamp to utc string for human readability.
+                            document.getElementById('timeStamp').innerHTML = unixTimeStampInUtcString;  // Setting the time stamp value in HTML page.
+                            document.getElementById('blockReward').innerHTML = currentBlock["blockReward"] / 1000000000000000000;   //Setting the block reward value in HTML (Also, coverting the block reward from wei unit to ethers.)
+                        })
+                        .catch(function (error) {
+                            console.log("Error response received from api: " + error);                  //  For capturing the error occured while fetching the details from etherscan api.
+                        })
+                }
+                else
+                    console.error(error);       //  Capturing error if getBlockNumber function fails to respond with block details.
+            })
+        }
+        catch (error) {
+            alert(error.toString().toLowerCase())
+            if (error.toString().toLowerCase().includes("referenceerror")) {
+                alert("Metamask is not installed into the browser. Click 'OK' to continue..!!")
+                window.location.href = 'https://metamask.io/';      //  Redirectly to metamask website for metamask installation, if it is not installed into the browser already.
             }
-            else
-                console.error(error);
-        })
+            else {
+                console.log("Exception occured: " + error)          //  Capturing error other than Web3 reference error.
+            }
+        }
     }
 
     //  Calling this function to display the details of the latest block mined on webpage load.
