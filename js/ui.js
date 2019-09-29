@@ -79,7 +79,6 @@
             })
         }
         catch (error) {
-            alert(error.toString().toLowerCase())
             if (error.toString().toLowerCase().includes("referenceerror")) {
                 alert("Metamask is not installed into the browser. Click 'OK' to continue..!!")
                 window.location.href = 'https://metamask.io/';      //  Redirectly to metamask website for metamask installation, if it is not installed into the browser already.

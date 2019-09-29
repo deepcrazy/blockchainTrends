@@ -9,7 +9,7 @@
 -------------------------------------
 
 ### PROJECT DESCRIPTION ####
------------------------
+----------------------------
 	1. The website has 4 sections i.e. Home, Current Block Mined, Cryptocurrency Voting and Ether Balance -  which are displayed 
 	   on the sidebar of the HTML page.
 	2. 'Home' section provides the general information and tells about the popular stats for crytocurrency (i.e. Bitcoin). This is
@@ -21,7 +21,7 @@
 
 
 ### Steps for running the project:
---------------------------------
+----------------------------------
 	
     # Pre-requisite: The browser should have 'Metamask' pre-installed to open this webpage on the browser.
     ----------------
@@ -31,10 +31,10 @@
 
 
 ### NOTE:
--------
-	1. The project should be opend in the browser which has already 'Metamask' installed.
+---------
+	1. Current block mined functionality on webpage is only restricted to provide actual information of etherscan main network instead of other test networks. Although, there will be information displayed but will not be in sync as it will be in case of main network.
 
 
-### References:
--------------
+#### References:
+---------------
 	1. Layout using [https://purecss.io/] compiled. (https://purecss.io/layouts/)
